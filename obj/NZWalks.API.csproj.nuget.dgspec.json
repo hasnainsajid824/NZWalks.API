@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj": {}
+    "e:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj": {}
   },
   "projects": {
-    "E:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj": {
+    "e:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj",
+        "projectUniqueName": "e:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj",
         "projectName": "NZWalks.API",
-        "projectPath": "E:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj",
+        "projectPath": "e:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj",
         "packagesPath": "C:\\Users\\hasaj\\.nuget\\packages\\",
-        "outputPath": "E:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\obj\\",
+        "outputPath": "e:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hasaj\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -41,6 +41,16 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.14, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.14, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
