@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using NZWalks.API.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +10,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Injection Db Context
+builder.Services.AddDbContext<NZWalksDbContext>(options => 
+options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksContext"))
+);
 
 var app = builder.Build();
 

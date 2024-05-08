@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "e:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj": {}
+    "E:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj": {}
   },
   "projects": {
-    "e:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj": {
+    "E:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj",
+        "projectUniqueName": "E:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj",
         "projectName": "NZWalks.API",
-        "projectPath": "e:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj",
+        "projectPath": "E:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\NZWalks.API.csproj",
         "packagesPath": "C:\\Users\\hasaj\\.nuget\\packages\\",
-        "outputPath": "e:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\obj\\",
+        "outputPath": "E:\\VS CODE\\C #\\NZWalks.API\\NZWalks.API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hasaj\\AppData\\Roaming\\NuGet\\NuGet.Config"
