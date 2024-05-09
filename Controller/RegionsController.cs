@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NZWalks.API.Data;
 using NZWalks.API.Models.Domains;
 using NZWalks.API.Models.Domains.DTO;
@@ -20,9 +21,9 @@ public class RegionsController : ControllerBase
 
     }
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var regions = DbContext.Regions.ToList();
+        var regions = await DbContext.Regions.ToListAsync();
 
         var regionDto = new List<RegionDto>();
         foreach (var region in regions)
@@ -40,9 +41,9 @@ public class RegionsController : ControllerBase
 
     [HttpGet]
     [Route("{id:Guid}")]
-    public IActionResult GetById([FromRoute] Guid id)
+    public async  Task<IActionResult> GetById([FromRoute] Guid id)
     {
-        var region = DbContext.Regions.FirstOrDefault(x => x.Id == id);
+        var region = await DbContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
         if (region == null)
         {
             return NotFound();
@@ -59,7 +60,7 @@ public class RegionsController : ControllerBase
 
 
     [HttpPost]
-    public IActionResult Create([FromBody] AddRegionDto dto)
+    public async Task<IActionResult> Create([FromBody] AddRegionDto dto)
     {
         var regions = new Region
         {
@@ -68,8 +69,8 @@ public class RegionsController : ControllerBase
             ImageRegionUrl = dto.ImageRegionUrl,
         };
 
-        DbContext.Regions.Add(regions);
-        DbContext.SaveChanges();
+        await DbContext.Regions.AddAsync(regions);
+        await DbContext.SaveChangesAsync();
 
         var regionDto = new RegionDto
         {
@@ -82,11 +83,10 @@ public class RegionsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
     }
 
-    [HttpGet]
-    [Route("{id:Guid}")]
-    public IActionResult Update([FromRoute] Guid Id, [FromBody] UpdateRegionDto updateDto)
+    [HttpPut("{id:Guid}")]   
+     public async Task<IActionResult> Update([FromRoute] Guid Id, [FromBody] UpdateRegionDto updateDto)
     {
-        var region = DbContext.Regions.FirstOrDefault(x => x.Id == Id);
+        var region = await DbContext.Regions.FirstOrDefaultAsync(x => x.Id == Id);
         if (region == null)
         {
             return NotFound();
@@ -94,7 +94,7 @@ public class RegionsController : ControllerBase
         region.Code = updateDto.Code;
         region.Name = updateDto.Name;
         region.ImageRegionUrl = updateDto.ImageRegionUrl;
-        DbContext.SaveChanges();
+        await DbContext.SaveChangesAsync();
         var regionDto = new RegionDto{
             Id = region.Id,
             Code = region.Code, 
@@ -107,16 +107,16 @@ public class RegionsController : ControllerBase
 
     [HttpDelete]
     [Route("{id:Guid}")]
-    public IActionResult Delete([FromRoute]Guid Id)
+    public async Task<IActionResult> Delete([FromRoute]Guid Id)
     {
-        var region = DbContext.Regions.FirstOrDefault(x => x.Id == Id);
+        var region =  await DbContext.Regions.FirstOrDefaultAsync(x => x.Id == Id);
         if (region == null)
         {
             return NotFound();
         }
 
         DbContext.Regions.Remove(region);
-        DbContext.SaveChanges();
+        await DbContext.SaveChangesAsync();
 
         var regionDto = new RegionDto{
             Id = region.Id,
