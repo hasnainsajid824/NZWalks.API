@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NZWalks.API.Data;
 using NZWalks.API.Models.Domains;
-using NZWalks.API.Models.Domains.DTO;
+using NZWalks.API.Models.DTO;
 using NZWalks.API.Repositories;
 
 namespace NZWalks.API.Controller;
@@ -18,29 +19,20 @@ public class RegionsController : ControllerBase
     private readonly NZWalksDbContext DbContext;
     private readonly IRegionRepository RegionRepository;
 
+    private readonly IMapper Mapper;
 
-    public RegionsController(NZWalksDbContext dbContext, IRegionRepository regionRepository)
+    public RegionsController(NZWalksDbContext dbContext, IRegionRepository regionRepository,
+    IMapper mapper)
     {
         this.DbContext = dbContext;
-        RegionRepository = regionRepository;
+        this.RegionRepository = regionRepository;
+        this.Mapper = mapper;
     }
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var regions = await RegionRepository.GetAllAsync();
-
-        var regionDto = new List<RegionDto>();
-        foreach (var region in regions)
-        {
-            regionDto.Add(new RegionDto
-            {
-                Id = region.Id,
-                Code = region.Code,
-                Name = region.Name,
-                ImageRegionUrl = region.ImageRegionUrl,
-            });
-        }
-        return Ok(regionDto);
+        return Ok(Mapper.Map<List<RegionDto>>(regions));
     }
 
     [HttpGet]
@@ -52,36 +44,18 @@ public class RegionsController : ControllerBase
         {
             return NotFound();
         }
-        var regionDto = new RegionDto
-        {
-            Id = region.Id,
-            Code = region.Code,
-            Name = region.Name,
-            ImageRegionUrl = region.ImageRegionUrl,
-        };
-        return Ok(regionDto);
+        return Ok(Mapper.Map<RegionDto>(region));
     }
 
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] AddRegionDto dto)
     {
-        var regions = new Region
-        {
-            Code = dto.Code,
-            Name = dto.Name,
-            ImageRegionUrl = dto.ImageRegionUrl,
-        };
+        var regions = Mapper.Map<Region>(dto);
 
         regions = await RegionRepository.CreateAsync(regions);
 
-        var regionDto = new RegionDto
-        {
-            Id = regions.Id,
-            Code = regions.Code,
-            Name = regions.Name,
-            ImageRegionUrl = regions.ImageRegionUrl,
-        };
+        var regionDto = Mapper.Map<RegionDto>(regions);
 
         return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
     }
@@ -90,23 +64,13 @@ public class RegionsController : ControllerBase
     [Route("{id:Guid}")]
      public async Task<IActionResult> Update([FromRoute] Guid Id, [FromBody] UpdateRegionDto updateDto)
     {
-        var region = new Region{
-            Code = updateDto.Code,
-            Name = updateDto.Name,
-            ImageRegionUrl = updateDto.ImageRegionUrl,
-        };
+        var region = Mapper.Map<Region>(updateDto);
         region = await RegionRepository.UpdateAsync(Id, region);
         if (region == null)
         {
             return NotFound();
         }
-        var regionDto = new RegionDto{
-            Id = region.Id,
-            Code = region.Code, 
-            Name = region.Name,
-            ImageRegionUrl = region.ImageRegionUrl,
-        };
-
+        var regionDto = Mapper.Map<RegionDto>(region);
         return Ok(regionDto);
     }
 
@@ -119,14 +83,7 @@ public class RegionsController : ControllerBase
         {
             return NotFound();
         }
-
-        var regionDto = new RegionDto{
-            Id = region.Id,
-            Code = region.Code, 
-            Name = region.Name,
-            ImageRegionUrl = region.ImageRegionUrl,
-        };
-        return Ok(regionDto);
+        return Ok(Mapper.Map<RegionDto>(region));
     }
 
 }

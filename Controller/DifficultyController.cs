@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.Data;
+using NZWalks.API.Mappings;
 using NZWalks.API.Models.Domains;
-using NZWalks.API.Models.Domains.DTO;
+using NZWalks.API.Models.DTO;
+using NZWalks.API.Repositories;
 
 namespace NZWalks.API.Controller
 {
@@ -14,106 +17,74 @@ namespace NZWalks.API.Controller
     public class DifficultyController : ControllerBase
     {
         private readonly NZWalksDbContext DbContext;
-    public DifficultyController(NZWalksDbContext dbContext)
-    {
-        this.DbContext = dbContext;
+        private readonly IDifficultyRepository difficultyRepository;
+        private readonly IMapper mapper;
 
-    }
-    [HttpGet]
-    public IActionResult GetAll()
-    {
-        var difficulty = DbContext.Difficulties.ToList();
-
-        var difficultyDto = new List<DifficultyDto>();
-        foreach (var difficult in difficulty)
+        public DifficultyController(NZWalksDbContext dbContext, IDifficultyRepository difficultyRepository,
+                                    IMapper mapper)
         {
-            difficultyDto.Add(new DifficultyDto
+            this.DbContext = dbContext;
+            this.difficultyRepository = difficultyRepository;
+            this.mapper = mapper;
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var difficulty = await difficultyRepository.GetAllAsync();
+
+            return Ok(mapper.Map<List<DifficultyDto>>(difficulty));
+        }
+
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
+        {
+            var difficulty = await difficultyRepository.GetByIdAsync(id);
+            if (difficulty == null)
             {
-                Id = difficult.Id,
-                Name = difficult.Name,
-            });
-        }
-        return Ok(difficultyDto);
-    }
-
-    [HttpGet]
-    [Route("{id:Guid}")]
-    public IActionResult GetById([FromRoute] Guid id)
-    {
-        var difficulties = DbContext.Difficulties.FirstOrDefault(x => x.Id == id);
-        if (difficulties == null)
-        {
-            return NotFound();
-        }
-        var difficultyDto = new DifficultyDto
-        {
-            Id = difficulties.Id,
-            Name = difficulties.Name,
-        };
-        return Ok(difficultyDto);
-    }
-
-
-    [HttpPost]
-    public IActionResult Create([FromBody] AddDifficultyDto dto)
-    {
-        var difficulty = new Difficulty
-        {
-            Name = dto.Name,
-        };
-
-        DbContext.Difficulties.Add(difficulty);
-        DbContext.SaveChanges();
-
-        var difficultyDto = new DifficultyDto
-        {
-            Id = difficulty.Id,
-            Name = difficulty.Name,
-        };
-
-        return CreatedAtAction(nameof(GetById), new { id = difficultyDto.Id }, difficultyDto);
-    }
-
-    [HttpPut]
-    [Route("{id:Guid}")]
-    public IActionResult Update([FromRoute] Guid Id, [FromBody] UpdateDifficultyDto updateDto)
-    {
-        var difficulty = DbContext.Difficulties.FirstOrDefault(x => x.Id == Id);
-        if (difficulty == null)
-        {
-            return NotFound();
-        }
-        difficulty.Name = updateDto.Name;
-        DbContext.SaveChanges();
-        var difficultyDto = new DifficultyDto
-        {
-            Id = difficulty.Id,
-            Name = difficulty.Name,
-        };
-
-        return Ok(difficultyDto);
-    }
-
-    [HttpDelete]
-    [Route("{id:Guid}")]
-    public IActionResult Delete([FromRoute]Guid Id)
-    {
-        var difficulty = DbContext.Difficulties.FirstOrDefault(x => x.Id == Id);
-        if (difficulty == null)
-        {
-            return NotFound();
+                return NotFound();
+            }
+            return Ok(mapper.Map<DifficultyDto>(difficulty));
         }
 
-        DbContext.Difficulties.Remove(difficulty);
-        DbContext.SaveChanges();
 
-        var difficultyDto = new DifficultyDto
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] AddDifficultyDto dto)
         {
-            Id = difficulty.Id,
-            Name = difficulty.Name,
-        };
-        return Ok(difficultyDto);
-    }
+            var difficulty = mapper.Map<Difficulty>(dto);
+
+            difficulty = await difficultyRepository.CreateAsync(difficulty);
+
+            var difficultyDto = mapper.Map<DifficultyDto>(difficulty);
+
+            return CreatedAtAction(nameof(GetById), new { id = difficultyDto.Id }, difficultyDto);
+        }
+
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid Id, [FromBody] UpdateDifficultyDto updateDto)
+        {
+
+            var difficulty =  mapper.Map<Difficulty>(updateDto);
+            difficulty = await difficultyRepository.UpdateAsync(Id, difficulty);
+            if (difficulty == null)
+            {
+                return NotFound();
+            }
+            return Ok(mapper.Map<DifficultyDto>(difficulty));
+        }
+
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid Id)
+        {
+            var difficulty = await difficultyRepository.DeleteAsync(Id);
+            if (difficulty == null)
+            {
+                return NotFound();
+            }
+            return Ok(mapper.Map<DifficultyDto>(difficulty));
+        }
 
     }
 }
