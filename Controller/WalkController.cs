@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using NZWalks.API.CustomActionFilters;
 using NZWalks.API.Models.Domains;
 using NZWalks.API.Models.DTO;
 using NZWalks.API.Repositories;
@@ -23,6 +24,7 @@ namespace NZWalks.API.Controller
             this.repository = repository;
         }
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Post([FromBody] AddWalkDto dto)
         {
             var walk = mapper.Map<Walk>(dto);
@@ -40,18 +42,20 @@ namespace NZWalks.API.Controller
 
         [HttpGet]
         [Route("{id:Guid}")]
-        public async Task<IActionResult> GetById([FromRoute] Guid id){
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
+        {
             var walk = await repository.GetByIdAsync(id);
             return Ok(mapper.Map<WalkDto>(walk));
         }
 
         [HttpPut]
         [Route("{id:Guid}")]
+        [ValidateModel]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateWalkDto dto)
         {
             var walk = mapper.Map<Walk>(dto);
             walk = await repository.UpdateAsync(id, walk);
-            if (walk ==  null)
+            if (walk == null)
             {
                 return NotFound();
             }

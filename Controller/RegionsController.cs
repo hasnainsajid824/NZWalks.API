@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NZWalks.API.CustomActionFilters;
 using NZWalks.API.Data;
 using NZWalks.API.Models.Domains;
 using NZWalks.API.Models.DTO;
@@ -37,7 +38,7 @@ public class RegionsController : ControllerBase
 
     [HttpGet]
     [Route("{id:Guid}")]
-    public async  Task<IActionResult> GetById([FromRoute] Guid id)
+    public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
         var region = await RegionRepository.GetByIdAsync(id);
         if (region == null)
@@ -49,6 +50,7 @@ public class RegionsController : ControllerBase
 
 
     [HttpPost]
+    [ValidateModel]
     public async Task<IActionResult> Create([FromBody] AddRegionDto dto)
     {
         var regions = Mapper.Map<Region>(dto);
@@ -58,11 +60,13 @@ public class RegionsController : ControllerBase
         var regionDto = Mapper.Map<RegionDto>(regions);
 
         return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
+
     }
 
-    [HttpPut]   
+    [HttpPut]
     [Route("{id:Guid}")]
-     public async Task<IActionResult> Update([FromRoute] Guid Id, [FromBody] UpdateRegionDto updateDto)
+    [ValidateModel]
+    public async Task<IActionResult> Update([FromRoute] Guid Id, [FromBody] UpdateRegionDto updateDto)
     {
         var region = Mapper.Map<Region>(updateDto);
         region = await RegionRepository.UpdateAsync(Id, region);
@@ -72,13 +76,14 @@ public class RegionsController : ControllerBase
         }
         var regionDto = Mapper.Map<RegionDto>(region);
         return Ok(regionDto);
+
     }
 
     [HttpDelete]
     [Route("{id:Guid}")]
-    public async Task<IActionResult> Delete([FromRoute]Guid Id)
+    public async Task<IActionResult> Delete([FromRoute] Guid Id)
     {
-        var region =  await RegionRepository.DeleteAsync(Id);
+        var region = await RegionRepository.DeleteAsync(Id);
         if (region == null)
         {
             return NotFound();
