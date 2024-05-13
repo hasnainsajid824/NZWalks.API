@@ -18,5 +18,9 @@ public class AutoMapperProfiles : Profile
         CreateMap<AddDifficultyDto, Difficulty>().ReverseMap();
         CreateMap<UpdateDifficultyDto, Difficulty>().ReverseMap();
 
+        // For Walk
+        CreateMap<Walk, WalkDto>().ReverseMap();
+        CreateMap<AddWalkDto, Walk>().ReverseMap();
+        CreateMap<UpdateWalkDto, Walk>().ReverseMap();
     }    
 }
