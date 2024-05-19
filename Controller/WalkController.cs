@@ -34,9 +34,10 @@ namespace NZWalks.API.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery
+        ,[FromQuery] string? sortBy, [FromQuery] bool isAscending, [FromQuery] int pageNum= 1,[FromQuery] int pageSize = 1000)
         {
-            var walk = await repository.GetAllAsync();
+            var walk = await repository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending, pageNum, pageSize);
             return Ok(mapper.Map<List<WalkDto>>(walk));
         }
 
