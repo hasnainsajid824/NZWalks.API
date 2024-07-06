@@ -16,14 +16,12 @@ namespace NZWalks.API.Controller
     [Route("api/[controller]")]
     public class DifficultyController : ControllerBase
     {
-        private readonly NZWalksDbContext DbContext;
         private readonly IDifficultyRepository difficultyRepository;
         private readonly IMapper mapper;
 
-        public DifficultyController(NZWalksDbContext dbContext, IDifficultyRepository difficultyRepository,
+        public DifficultyController(IDifficultyRepository difficultyRepository,
                                     IMapper mapper)
         {
-            this.DbContext = dbContext;
             this.difficultyRepository = difficultyRepository;
             this.mapper = mapper;
         }

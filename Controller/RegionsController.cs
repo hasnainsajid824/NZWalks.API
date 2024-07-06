@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NZWalks.API.CustomActionFilters;
@@ -30,6 +31,7 @@ public class RegionsController : ControllerBase
         this.Mapper = mapper;
     }
     [HttpGet]
+    [Authorize(Roles = "Reader")]
     public async Task<IActionResult> GetAll()
     {
         var regions = await RegionRepository.GetAllAsync();
@@ -38,6 +40,8 @@ public class RegionsController : ControllerBase
 
     [HttpGet]
     [Route("{id:Guid}")]
+    [Authorize(Roles = "Reader")]
+
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
         var region = await RegionRepository.GetByIdAsync(id);
@@ -51,6 +55,7 @@ public class RegionsController : ControllerBase
 
     [HttpPost]
     [ValidateModel]
+    [Authorize(Roles = "Writer")]
     public async Task<IActionResult> Create([FromBody] AddRegionDto dto)
     {
         var regions = Mapper.Map<Region>(dto);
@@ -66,6 +71,7 @@ public class RegionsController : ControllerBase
     [HttpPut]
     [Route("{id:Guid}")]
     [ValidateModel]
+    [Authorize(Roles = "Writer")]
     public async Task<IActionResult> Update([FromRoute] Guid Id, [FromBody] UpdateRegionDto updateDto)
     {
         var region = Mapper.Map<Region>(updateDto);
@@ -81,6 +87,8 @@ public class RegionsController : ControllerBase
 
     [HttpDelete]
     [Route("{id:Guid}")]
+    [Authorize(Roles = "Writer")]
+
     public async Task<IActionResult> Delete([FromRoute] Guid Id)
     {
         var region = await RegionRepository.DeleteAsync(Id);
