@@ -1,2 +1,4 @@
 Migrations/
 bin/
+obj/
+Logs/

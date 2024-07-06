@@ -83,3 +83,12 @@ E:\VS CODE\C #\NZWalks.API\NZWalks.API\bin\Debug\net7.0\Microsoft.AspNetCore.Ide
 E:\VS CODE\C #\NZWalks.API\NZWalks.API\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
 E:\VS CODE\C #\NZWalks.API\NZWalks.API\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
 E:\VS CODE\C #\NZWalks.API\NZWalks.API\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+E:\VS CODE\C #\NZWalks.API\NZWalks.Api\bin\Debug\net7.0\Serilog.dll
+E:\VS CODE\C #\NZWalks.API\NZWalks.Api\bin\Debug\net7.0\Serilog.AspNetCore.dll
+E:\VS CODE\C #\NZWalks.API\NZWalks.Api\bin\Debug\net7.0\Serilog.Extensions.Hosting.dll
+E:\VS CODE\C #\NZWalks.API\NZWalks.Api\bin\Debug\net7.0\Serilog.Extensions.Logging.dll
+E:\VS CODE\C #\NZWalks.API\NZWalks.Api\bin\Debug\net7.0\Serilog.Formatting.Compact.dll
+E:\VS CODE\C #\NZWalks.API\NZWalks.Api\bin\Debug\net7.0\Serilog.Settings.Configuration.dll
+E:\VS CODE\C #\NZWalks.API\NZWalks.Api\bin\Debug\net7.0\Serilog.Sinks.Console.dll
+E:\VS CODE\C #\NZWalks.API\NZWalks.Api\bin\Debug\net7.0\Serilog.Sinks.Debug.dll
+E:\VS CODE\C #\NZWalks.API\NZWalks.Api\bin\Debug\net7.0\Serilog.Sinks.File.dll
